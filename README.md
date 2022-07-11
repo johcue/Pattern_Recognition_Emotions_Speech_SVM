@@ -44,4 +44,7 @@ Now, as previously mentioned, we want to perform a *sound characteristics* extra
 11. Spectral Frequency Rolloff
 12. Tonnez
 
+The function _"def extract_features(path)"_ was created to perform this process.
 
+## Method and Model Evaluation
+Ya con la funcion de extraccion creada, se procedio a realizar el procesamiento de datos. 
