@@ -1,0 +1,64 @@
+def extract_features(path):
+  hop_length = 512
+  frame_length = 2048
+  sample_rate = []
+  data = []
+  result = np.array([])
+  data, sample_rate = librosa.load(path)
+  
+  #Energia
+  energia = np.array([
+                      np.sum(np.abs(data[i:i+frame_length]**2))
+                      for i in range(0,len(data),hop_length)
+                     ]) / frame_length
+  eng = np.mean(energia, axis=0)
+  result=np.hstack((result, eng))
+
+  #Chroma_stft
+  stft = np.abs(librosa.stft(data))
+  chroma_stft = np.mean(librosa.feature.chroma_stft(S=stft, sr=sample_rate).T, axis=0)
+  result = np.hstack((result, chroma_stft)) 
+
+  # MelEspectrograma
+  mel = np.mean(librosa.feature.melspectrogram(y=data, sr=sample_rate).T, axis=0)
+  result = np.hstack((result, mel))
+  
+  # MFCC
+  mfcc = np.mean(librosa.feature.mfcc(y=data, sr=sample_rate).T, axis=0)
+  result = np.hstack((result, mfcc))
+
+  # RMS
+  rms = np.mean(librosa.feature.rms(y=data).T, axis=0)
+  result = np.hstack((result, rms))
+
+  # ZCR
+  zcr = np.mean(librosa.feature.zero_crossing_rate(y=data).T, axis=0)
+  result=np.hstack((result, zcr))
+
+  #Centroide Espectral
+  cent = np.mean(librosa.feature.spectral_centroid(y=data, sr=sample_rate).T,axis=0)
+  result = np.hstack((result, cent))
+
+  #Ancho de Banda Espectral(verificar)
+  spec_bw = np.mean(librosa.feature.spectral_bandwidth(y=data, sr=sample_rate).T, axis=0)
+  result = np.hstack((result, spec_bw))
+
+  #Contraste Espectral
+  S_c = np.abs(librosa.stft(data))
+  contrast = np.mean(librosa.feature.spectral_contrast(S=S_c, sr=sample_rate).T, axis=0)
+  result = np.hstack((result, contrast))
+
+  #Coeficiente de Tonalidad o Planitud Espectral
+  flatness = np.mean(librosa.feature.spectral_flatness(y=data).T, axis=0)
+  result = np.hstack((result, flatness))
+
+  # Espectral Rolloff
+  rolloff=np.mean(librosa.feature.spectral_rolloff(y=data, sr=sample_rate).T,axis=0)
+  result = np.hstack((result, rolloff))
+
+  #Tonnez
+  y1 = librosa.effects.harmonic(data)
+  tonnetz = np.mean(librosa.feature.tonnetz(y=y1, sr=sample_rate).T,axis=0)
+  result = np.hstack((result, tonnetz))
+
+  return result
