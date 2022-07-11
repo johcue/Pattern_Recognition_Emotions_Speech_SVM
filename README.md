@@ -47,4 +47,31 @@ Now, as previously mentioned, we want to perform a *sound characteristics* extra
 The function _"def extract_features(path)"_ was created to perform this process.
 
 ## Method and Model Evaluation
-Ya con la funcion de extraccion creada, se procedio a realizar el procesamiento de datos. 
+In order to understand the essence of the SVM classification, only four basic concepts need to be understood: (i) the separator hyperplane, (ii) the maximum margin hyperplane, (iii) the margin, and (iv) the kernel.
+
+A hyperplane: It is basically a line that separates the characteristics depending on their behavior. However, sometimes there are many lines that can separate our data into different sets. Which of these provides the best classifier? The simplest way to work around this problem is to select the line that is, roughly speaking, "in the middle". That is, the line that is at the maximum distance from any of the features, for example, the energy and the chroma vector, would be selected.
+
+However, we have started from the fact that these characteristics can be separated. But what if for an emotion like anger, the energy is similar to the energy for happiness, for example? Intuitively, we would like vector support machines to be able to deal with data errors by allowing some anomalous expression profiles to fall on the "wrong side" of the separation hyperplane.
+
+To handle cases like these, the algorithm must be modified by adding a "margin" a soft margin. Essentially, this allows some data points to be pushed across the margin of the separation hyperplane without affecting the final result.
+
+Since we don't want this to happen we often introduce control parameters that specify how much feature data they are allowed to violate the separation hyperplane and how far across the line they are allowed to go. The kernel function provides a solution to this problem by adding an additional dimension to the data.
+
+With the function created, data processing was performed for each dataset. These numeric values were stored in a .csv file which can be accessed [here](https://drive.google.com/file/d/1qXaWiRSWDJi6Tw7oE-m14Z1yRM3hJqD6/view?usp=sharing/) ~~Please do not try to open the file as it is too large and could damage your pc~~ 
+
+The sklearn toolkit called [SVC](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC/) will be used, which is capable of classifying multi-class databases supported by supervised learning methods such as vector support machines.
+
+The accuracy of the classification was evaluated using the _accuracy score_ function subject to different variables such as: Test size, which determines the proportion of the data set to be included in the test division. Kernel that specifies the type of kernel to use in the algorithm. Regularization parameter (C). And Kernel function polynomials degree.
+
+Continuing with the evaluation of the performance of the model according to the results obtained from the _accuracy score_, the hyperparameters Kernel = rbf and C = 100 were taken as standard values, with a _test size_ of 0.3. For this, the sklearn classification report function was used, which provides a summary of the main metrics used in classification;
+
+- Precision = Precision is the ability of the classifier not to label a sample that is negative as positive. The lower the dispersion the greater the accuracy. In our model, the precision is the dispersion of the set of values obtained _yEst_ from repeated measurements of the _ytest_.
+
+- Recall = Also known as sensitivity, it is the proportion that the model obtains by correctly classifying a positive value. This metric indicates the fraction of Labels where we correctly declare x emotion of all cases where the actual emotion is x emotion.
+
+- f1-score = Summarizes accuracy and sensitivity into a single metric and is understood as the mean between the two.
+
+- support = Is the number of occurrences of each class in _ytrain_.
+
+
+
